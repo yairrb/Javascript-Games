@@ -14,13 +14,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var directionOfBody = "";
     //acces to the score table
     let score = document.getElementById("score-points");
+    let record = document.getElementById("records-points");
+
 
     /*   GAME OBJECTS  */
     let snake = [];
 
     let head = new Box(getRandomInt(0, 24) * 20, getRandomInt(0, 14) * 20);
     snake.push(head);
-    
     //new block of food
     var food = new Box(getRandomInt(0, 24) * 20, getRandomInt(0, 14) * 20);
 
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             
             if (head.getWidth() == bodyBlock.getWidth() && head.getHeigth() == bodyBlock.getHeigth()) {
                 alert("GAME OVER");
+                window.localStorage.setItem('record', snake.length -1 );
                 location.reload();
 
             }
@@ -179,6 +181,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function drawGame() {
+
+        record.innerHTML = window.localStorage.getItem('record');
         drawer.clearCanvas();
         drawer.drawSnake(snake);
         drawer.drawFood(food);
