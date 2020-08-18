@@ -1,7 +1,5 @@
 # Javascript-Games
 
-<br>
-
 #Snake Game
 
 I mage the classic snake game using HTML canvas, JavaScript and CSS.
