@@ -12,16 +12,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // this will provide to us a constant direction
     var direction = "";
     var directionOfBody = "";
+
     //acces to the score table
     let score = document.getElementById("score-points");
     let record = document.getElementById("records-points");
-
 
     /*   GAME OBJECTS  */
     let snake = [];
 
     let head = new Box(getRandomInt(0, 24) * 20, getRandomInt(0, 14) * 20);
     snake.push(head);
+    
     //new block of food
     var food = new Box(getRandomInt(0, 24) * 20, getRandomInt(0, 14) * 20);
 
@@ -47,7 +48,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             
             if (head.getWidth() == bodyBlock.getWidth() && head.getHeigth() == bodyBlock.getHeigth()) {
                 alert("GAME OVER");
-                window.localStorage.setItem('record', snake.length -1 );
+                let bestRecord = window.localStorage.getItem('record');
+                if( bestRecord < snake.length -1){
+                    window.localStorage.setItem('record', snake.length -1 );
+                }
+
                 location.reload();
 
             }
@@ -57,17 +62,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function casToBorder(){
         let head = snake[0];
         
-        if (head.getWidth() > 500 ) {
+        if (head.getWidth() > 499 ) {
             head.setWidth(0);
         }
         if (head.getWidth() < 0) {
             head.setWidth(500);
         }
+        if ( head.getHeigth() > 299) {
+            head.setHeigth(0);
+        }
         if (head.getHeigth() < 0) {
             head.setHeigth(300);
-        }
-        if ( head.getHeigth() > 300) {
-            head.setHeigth(0);
         }
     };
 
@@ -85,36 +90,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     }
 
-
-    function nexPositionY() {
-        if (direction == "UP") {
-            return snake[0].getHeigth() - 20;
-        }
-        if (direction == "DOWN") {
-            return snake[0].getHeigth() + 20;
-        }
-        return snake[0].getHeigth();
-
-    }
-
-    function nexPositionX() {
-        if (direction == "RIGTH") {
-            snake[0].getWidth() + 20;
-        }
-        if (direction == "LEFT") {
-            return snake[0].getWidth() - 20;
-        }
-        return snake[0].getWidth();
-    }
-
     function eatFood() {
 
-        if (food.getWidth() == nexPositionX() && food.getHeigth() == nexPositionY()) {
+        if (food.getWidth() == snake[0].getWidth() && food.getHeigth() == snake[0].getHeigth()) {
 
             console.log("EATING FOOD");
             let newHead = new Box(food.getWidth(), food.getHeigth());
             snake.unshift(newHead);
-            console.log(snake.length);
             updateBody();
             createNewFood();
             updateScore();
