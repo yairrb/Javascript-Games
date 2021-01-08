@@ -5,6 +5,7 @@ class Bar {
         this._y = y;
         this._width = width;
         this._heigth = heigth;
+        this._direction = '';
     }
 
     set x ( value ) {
@@ -22,6 +23,10 @@ class Bar {
         this._heigth = value;
     };
 
+    set direction( value ) {
+        this._direction = value;
+    }
+
     get x() {
         return this._x;
     };
@@ -37,4 +42,8 @@ class Bar {
     get heigth() {
         return this._heigth;
     };
+
+    get direction() {
+        return this._direction;
+    }
 }

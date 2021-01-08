@@ -3,83 +3,65 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var canvas = document.getElementById("myCanvas");
     let drawer = new Drawer(canvas);
 
+    let players = [new Bar(10, 100, 10, 100), new Bar(980, 100, 10, 100)];
+    //w, h ,x, y
 
-    let player_1 = new Bar(10, 100, 10, 100);//w, h ,x, y
-    let player_2 = new Bar(10, 100, 980, 100);
+    players.forEach(player => {
+        drawer.draw_rectangle(player.width, player.heigth, player.x, player.y);
+    });
+  
 
-    var direction_player_1 = '';
-    var direction_player_2 = '';
-
-
-    drawer.draw_rectangle(player_1.width, player_1.heigth,player_1.x, player_1.y);
-    drawer.draw_rectangle(player_2.width, player_2.heigth,player_2.x, player_2.y);
-
-
-
-
-    function move_player_1(event) {
-        if (event.keyCode == 38 && direction_player_1 != "UP") {
-            direction_player_1 = "UP";
+    function move_player(event, player) {
+        if (event.keyCode ==87   && player.direction != "UP" && player.x == 10) {
+            player.direction = "UP";
         }
 
-        if (event.keyCode == 40 && direction_player_1 != "DOWN") {
-            direction_player_1 = "DOWN";
+        if (event.keyCode == 83 && player.direction != "DOWN" && player.x == 10) {
+            player.direction = "DOWN";
+        }
+
+        if (event.keyCode == 38 && player.direction != "UP" && player.x == 980) {
+            player.direction = "UP";
+        }
+
+        if (event.keyCode == 40 && player.direction != "DOWN" && player.x == 980) {
+            player.direction = "DOWN";
         }
     }
 
-    function update_position() {
-        if (direction_player_1 == 'DOWN') {
-            player_1.y = player_1.y +2;
-            
-        }
-        if (direction_player_1 == 'UP') {
-            player_1.y = player_1.y -2;
+    function update_position(player) {
+        if (player.direction == 'DOWN') {
+            player.y += 2;
 
         }
-
-        if (direction_player_2 == 'DOWN') {
-            player_2.y -= 2;
-        }
-        if (direction_player_2 == 'UP') {
-            player_2.y += 2;
-        }
-     
-    }
-
-
-    function move_player_2(event) {
-        if (event.keyCode == 83 && direction_player_2 != "UP") {
-            direction_player_2 = "UP";
-        }
-
-        if (event.keyCode == 87 && direction_player_2 != "DOWN") {
-            direction_player_2 = "DOWN";
+        if (player.direction == 'UP') {
+            player.y -= 2;
         }
     }
 
     function move_players(event) {
-        move_player_1(event);
-        move_player_2(event);
+        players.forEach(player => {
+            move_player(event, player);
+        });
     }
 
-    function collition() {
-        if (player_1.y > 501){
-            direction_player_1 = "UP";
+    function collition(player) {
+        if (player.y > 501) {
+            player.direction = "UP";
         }
-
-        if (player_1.y < 0){
-            direction_player_1 = "DOWN";
+        if (player.y < 0) {
+            player.direction = "DOWN";
         }
-        
     }
-    
 
-    function draw(){
+
+    function draw() {
         drawer.clear_canvas();
-        drawer.draw_rectangle(player_1.width,player_1.heigth ,player_1.x , player_1.y);
-        drawer.draw_rectangle(player_2.x,player_2.heigth , player_2.width, player_2.y);
-        update_position();
-        collition();
+        players.forEach(player => {
+            drawer.draw_rectangle(player.width, player.heigth, player.x, player.y);
+            update_position(player);
+            collition(player);
+        });
     }
 
 
